@@ -7,7 +7,7 @@ namespace HelloWorld
     class Enemy
     {
         protected float _enemyDmg;
-        private float _enemyHlth;
+        public float _enemyHlth;
         private float _enemyMana;
 
 
@@ -17,7 +17,12 @@ namespace HelloWorld
             _enemyDmg = 3;
             _enemyMana = 0;
         }
-        
+
+        public bool GetIsAlive()
+        {
+            return _enemyHlth > 0;
+        }
+
 
 
     }

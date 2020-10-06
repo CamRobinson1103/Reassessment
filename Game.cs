@@ -14,6 +14,7 @@ namespace HelloWorld
     {
         private bool _gameOver = false;
         private Character _player;
+        private Enemy _demon;
         private Shop _shop;
         private Item _phillyCheesesteak;
         private Item _popTart;
@@ -190,7 +191,10 @@ namespace HelloWorld
                 _player.AddItemToInventory(_soccerBall, 0);
 
 
+                while (_player.GetIsAlive() && _demon.GetIsAlive())
+                {
 
+                }
             }
         }
 

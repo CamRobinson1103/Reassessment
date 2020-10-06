@@ -51,5 +51,15 @@ namespace HelloWorld
         {
             _inventory[index] = item;
         }
+
+        public bool GetIsAlive()
+        {
+            return _health > 0;
+        }
+        public void PrintStats()
+        {
+            Console.WriteLine("Health " + _health);
+            Console.WriteLine("Damage " + _damage);
+        }
     }
 }
