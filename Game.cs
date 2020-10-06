@@ -19,9 +19,11 @@ namespace HelloWorld
         private Item _popTart;
         private Item _cupNoodles;
         private Item _plasticBaseballBat;
-        private Item _twinWaterPistols;
+        private Item _twinNerfPistols;
         private Item _sword;
         private Item _twinPistols;
+        private Item _soccerBall;
+        private Item _spikeBall;
         private Item[] _kitchenInventory;
 
         //Run the game
@@ -47,9 +49,11 @@ namespace HelloWorld
 
 
             _plasticBaseballBat.name = "Plastic Baseball Bat";
-            _twinWaterPistols.name = "Twin Water Pistols";
+            _twinNerfPistols.name = "Twin Nerf Pistols";
             _sword.name = "Sword";
             _twinPistols.name = "Twin Pistols";
+            _soccerBall.name = "Soccer Ball";
+            _spikeBall.name = "Spike Ball";
 
         }
 
@@ -96,6 +100,7 @@ namespace HelloWorld
 
         public void KitchenShop()
         {
+            ClearScreen();
             Console.WriteLine("You want to check out outside, but you are still hungry. You look throughout the kitchen for something to eat.");
             PrintInventory(_kitchenInventory);
 
@@ -154,7 +159,40 @@ namespace HelloWorld
             _shop.Sell(_player, itemIndex, playerIndex);
         }
 
+        public void ClearScreen()
+        {
+            Console.WriteLine("Press any key to continue");
+            Console.WriteLine("> ");
+            Console.ReadKey();
+            Console.Clear();
+        }
 
+        public void EnemyBattle()
+        {
+            ClearScreen();
+            char input;
+            GetInput(out input, "Plastic baseball bat", "Twin Nerf pistols", "Soccor ball",
+            "You walked outside to check on everything, when suddenly you see short demons with axes charging at you! You see a plastic baseball bat " +
+                "and a set of twin Nerf pistols to hopefully defend you. Whuch do you choose?");
+            if (input == '1')
+            {
+                Console.WriteLine("You picked up the plastic baseball bat for defense.");
+                _player.AddItemToInventory(_plasticBaseballBat,0);
+            }
+            else if (input == '2')
+            {
+                Console.WriteLine("You picked up the Nerf guns for defense.");
+                _player.AddItemToInventory(_twinNerfPistols,0);
+            }
+            else if (input == '3')
+            {
+                Console.WriteLine("You picked up the soccer ball for defence");
+                _player.AddItemToInventory(_soccerBall, 0);
+
+
+
+            }
+        }
 
         //Performed once when the game begins
         public void Start()

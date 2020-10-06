@@ -46,5 +46,10 @@ namespace HelloWorld
         {
             return _inventory;
         }
+
+        public void AddItemToInventory(Item item, int index)
+        {
+            _inventory[index] = item;
+        }
     }
 }
