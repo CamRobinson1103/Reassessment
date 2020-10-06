@@ -8,15 +8,21 @@ namespace HelloWorld
     {
         public string name;
         public int dmgBoost;
+        public int price;
     }
     class Game
     {
         private bool _gameOver = false;
         private Character _player;
+        private Shop _shop;
+        private Item _phillyCheesesteak;
+        private Item _popTart;
+        private Item _cupNoodles;
         private Item _plasticBaseballBat;
         private Item _twinWaterPistols;
         private Item _sword;
         private Item _twinPistols;
+        private Item[] _kitchenInventory;
 
         //Run the game
         public void Run()
@@ -32,10 +38,19 @@ namespace HelloWorld
 
         public void InitializeItem()
         {
+            _phillyCheesesteak.name = "Philly Cheesesteak";
+            _phillyCheesesteak.price = 3;
+            _popTart.name = "Pop Tart";
+            _popTart.price = 1;
+            _cupNoodles.name = "Cup Noodles";
+            _cupNoodles.price = 3;
+
+
             _plasticBaseballBat.name = "Plastic Baseball Bat";
             _twinWaterPistols.name = "Twin Water Pistols";
             _sword.name = "Sword";
             _twinPistols.name = "Twin Pistols";
+
         }
 
         public void GetInput(out char input, string option1, string option2, string option3, string query)
@@ -71,11 +86,59 @@ namespace HelloWorld
             return player;
         }
 
+        public void PrintInventory(Item[] inventory)
+        {
+            for(int i = 0; i < inventory.Length; i++)
+            {
+                Console.WriteLine((i + 1) + ". " + inventory[i].name + inventory[i].price);
+            }
+        }
+
+        public void KitchenShop()
+        {
+            Console.WriteLine("You want to check out outside, but you are still hungry. You look throughout the kitchen for something to eat.");
+            PrintInventory(_kitchenInventory);
+
+            char input = Console.ReadKey().KeyChar;
+
+            int itemIndex = -1;
+            switch (input)
+            {
+                case '1':
+                    {
+                        itemIndex = 0;
+                        break;
+                    }
+
+                case '2':
+                    {
+                        itemIndex = 1;
+                        break;
+                    }
+
+                case '3':
+                    {
+                        itemIndex = 2;
+                        break;
+                    }
+
+                default:
+                    {
+                        return;
+                    }
+            }
+            _shop.Sell(_player, itemIndex);
+           
+
+        }
+
         //Performed once when the game begins
         public void Start()
         {
             CharacterName();
         }
+
+
 
         //Repeated until the game ends
         public void Update()
