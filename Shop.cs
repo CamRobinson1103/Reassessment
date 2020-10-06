@@ -15,10 +15,10 @@ namespace HelloWorld
             _inventory = items;
         }
 
-        public bool Sell(Character player, int itemIndex)
+        public bool Sell(Character player, int itemIndex, int playerIndex)
         {
             Item itemToBuy = _inventory[itemIndex];
-            if(player.Buy(itemToBuy))
+            if(player.Buy(itemToBuy, playerIndex))
             {
                 _money += itemToBuy.price;
                 return true;

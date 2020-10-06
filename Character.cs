@@ -41,5 +41,10 @@ namespace HelloWorld
         {
             return _money;
         }
+
+        public Item[] GetInventory()
+        {
+            return _inventory;
+        }
     }
 }

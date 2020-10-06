@@ -127,15 +127,41 @@ namespace HelloWorld
                         return;
                     }
             }
-            _shop.Sell(_player, itemIndex);
-           
 
+            Console.WriteLine("Place it in a slot in your bag.");
+            PrintInventory(_player.GetInventory());
+
+            int playerIndex = -1;
+            switch (input)
+            {
+                case '1':
+                    playerIndex = 0;
+                    break;
+
+                case '2':
+                    playerIndex = 1;
+                    break;
+
+                case '3':
+                    playerIndex = 2;
+                    break;
+
+                default:
+                    {
+                        return;
+                    }
+            }
+            _shop.Sell(_player, itemIndex, playerIndex);
         }
+
+
 
         //Performed once when the game begins
         public void Start()
         {
             CharacterName();
+            InitializeItem();
+            KitchenShop();
         }
 
 
