@@ -50,11 +50,18 @@ namespace HelloWorld
 
 
             _plasticBaseballBat.name = "Plastic Baseball Bat";
+            _plasticBaseballBat.dmgBoost = 0;
             _twinNerfPistols.name = "Twin Nerf Pistols";
+            _twinNerfPistols.dmgBoost = 0;
             _sword.name = "Sword";
+            _sword.dmgBoost = 10;
             _twinPistols.name = "Twin Pistols";
+            _twinPistols.dmgBoost = 10;
             _soccerBall.name = "Soccer Ball";
+            _soccerBall.dmgBoost = 0;
             _spikeBall.name = "Spike Ball";
+            _spikeBall.dmgBoost = 10;
+
 
         }
 
@@ -178,17 +185,20 @@ namespace HelloWorld
             if (input == '1')
             {
                 Console.WriteLine("You picked up the plastic baseball bat for defense.");
-                _player.AddItemToInventory(_plasticBaseballBat,0);
+                _player.AddItemToInventory(_plasticBaseballBat,3);
+                _player.AddItemToInventory(_sword, 5);
             }
             else if (input == '2')
             {
                 Console.WriteLine("You picked up the Nerf guns for defense.");
-                _player.AddItemToInventory(_twinNerfPistols,0);
+                _player.AddItemToInventory(_twinNerfPistols,4);
+                _player.AddItemToInventory(_twinPistols, 6);
             }
             else if (input == '3')
             {
                 Console.WriteLine("You picked up the soccer ball for defence");
-                _player.AddItemToInventory(_soccerBall, 0);
+                _player.AddItemToInventory(_soccerBall, 8);
+                _player.AddItemToInventory(_spikeBall, 9);
                
             }
         }
@@ -207,7 +217,7 @@ namespace HelloWorld
                 if (input == '1')
                 {
                     float damageTaken = _player.Attack(_demonkid);
-                    Console.WriteLine("You attack the Demon Kid!");
+                    Console.WriteLine("You attack the Demon Kid! You dealt " + (_player._damage - _demonkid._enemyHlth) +" damage!");
                 }
 
                 else if (input == '2')
@@ -218,19 +228,110 @@ namespace HelloWorld
                 {
                     Console.WriteLine("You try to use a magic spell... But you don't know any magic!");
                 }
+                else
+                {
+                    Console.WriteLine("The Demon Kids attacks! It dealt " + (_demonkid._enemyDmg - _player._health));
 
-                Console.WriteLine("The Demon Kids attacks!");
-                
+                }
+
+            }
+
+           
+
+        }
+
+        public void ChangeWeapon(Character player)
+        {
+            ClearScreen();
+            if (_demonkid.GetIsAlive())
+            {
+                Console.WriteLine("You cannot beat the demon kid with your weapon! He goes in for the final attack! When suddenly...your weapon transforms!");
+                Item[] inventory = player.GetInventory();
+                char input = ' ';
+                for (int i = 0; i < inventory.Length; i++)
+                {
+                    Console.WriteLine((i + 1) + ". " + inventory[i].name + "\n damage: " + inventory[i].dmgBoost);
+                }
+                input = Console.ReadKey().KeyChar;
+                switch (input)
+                {
+                    case '1':
+                        {
+                            _player.EquipItem(3);
+                            Console.WriteLine("You obtained the " + inventory[5].name);
+                            Console.WriteLine("Base damaged increaded by " + inventory[5].dmgBoost);
+                            break;
+                        }
+
+                    case '2':
+                        {
+                            _player.EquipItem(4);
+                            Console.WriteLine("You obtained the " + inventory[6].name);
+                            Console.WriteLine("Base damage incresed by " + inventory[6].dmgBoost);
+                            break;
+                        }
+
+                    case '3':
+                        {
+                            _player.EquipItem(8);
+                            Console.WriteLine("Base damage incresed by " + inventory[9].dmgBoost);
+                            break;
+
+                        }
+                }
             }
         }
 
+        public void ContinuedBattle()
+        {
+            ClearScreen();
+            while (_player.GetIsAlive() && _demonkid.GetIsAlive())
+            {
+                _player.PrintStats();
+                _demonkid.PrintStats();
+
+                char input;
+                GetInput(out input, "Attack", "Defend", "Magic", "What will you do");
+
+                if (input == '1')
+                {
+                    float damageTaken = _player.Attack(_demonkid);
+                    Console.WriteLine("You attack the Demon Kid! You dealt " + (_player._damage - _demonkid._enemyHlth) + " damage!");
+                }
+
+                else if (input == '2')
+                {
+                    Console.WriteLine("You use your weapon to try to defend the upcoming attack!");
+                }
+                else if (input == '3')
+                {
+                    Console.WriteLine("You try to use a magic spell... But you don't know any magic!");
+                }
+                else
+                {
+                    Console.WriteLine("The Demon Kids attacks! It dealt " + (_demonkid._enemyDmg - _player._health));
+
+                }
+            }
+
+            if(_player.GetIsAlive())
+            {
+                Console.WriteLine("You defeated the demon kid! You cotinue on to find answers at to what is happening.");
+            }
+            else if (_demonkid.GetIsAlive())
+            {
+                Console.WriteLine("You lost to the demon kid!!");
+                _gameOver = true;
+
+            }
+        }
 
         //Performed once when the game begins
         public void Start()
         {
             CharacterName();
             InitializeItem();
-            KitchenShop();
+           
         }
 
 
@@ -238,7 +339,7 @@ namespace HelloWorld
         //Repeated until the game ends
         public void Update()
         {
-            
+            KitchenShop();
         }
 
         //Performed once when the game ends

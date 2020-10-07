@@ -6,11 +6,12 @@ namespace HelloWorld
 {
     class Character
     {
-        private float _health;
-        protected float _damage;
+        public float _health;
+        public float _damage;
         private float _magic;
         private int _money;
         private Item[] _inventory;
+        private Item _currentWeapon;
 
         public Character()
         {
@@ -81,6 +82,22 @@ namespace HelloWorld
         internal float Attack(Enemy demonkid)
         {
             throw new NotImplementedException();
+        }
+        public void EquipItem(int itemIndex)
+        {
+            if(Contains(itemIndex))
+            {
+                _currentWeapon = _inventory[itemIndex];
+            }
+        }
+
+        public bool Contains(int itemIndex)
+        {
+            if (itemIndex > 0 && itemIndex < _inventory.Length)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

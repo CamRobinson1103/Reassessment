@@ -6,7 +6,7 @@ namespace HelloWorld
 {
     class Enemy
     {
-        protected float _enemyDmg;
+        public float _enemyDmg;
         public float _enemyHlth;
         private float _enemyMana;
 
