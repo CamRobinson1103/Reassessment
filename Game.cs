@@ -14,6 +14,8 @@ namespace HelloWorld
     {
         private bool _gameOver = false;
         private Character _player;
+        private Character _ally;
+        private Enemy _codzilla;
         private Enemy _demonkid;
         private Shop _shop;
         private Item _phillyCheesesteak;
@@ -87,22 +89,49 @@ namespace HelloWorld
             }
         }
 
+        public void GetInput(out char input, string option1, string option2, string query)
+        {
+            //Prints description to console
+            Console.WriteLine(query);
+            //Prints options
+            Console.WriteLine("[1]" + option1);
+            Console.WriteLine("[2]" + option2);
+            Console.WriteLine("> ");
+
+            input = ' ';
+            //Loops untin the correct input is given
+            while (input != '1' && input != '2')
+            {
+                input = Console.ReadKey().KeyChar;
+                if (input != '1' && input != '2')
+                {
+                    Console.WriteLine("invalid Input");
+                }
+            }
+        }
+
+
         public Character CharacterName()
         {
-            Console.WriteLine("You just woke up from a good night's sleep. You head to the kitchen from some breakfast. When you get to the kitchen you feel" +
-                "like something's off. You don't hear your usually loud roommates. You say a loud 'hello'... but no response. You walk oout on your balcony to get some fresh air" +
-                "when you are then met with an orange/brown looking sky. You check your surroundong to see other's reaction,but you see nobody. You start to panic for a bit" +
-                "until you caught your breath and calmed down a bit. You start off with the basis. What is your name first of all?");
+            Console.WriteLine("You just woke up from a good night's sleep. You head to the kitchen from some breakfast. When you get to the kitchen you feel like something's off.");
+            ClearScreen();
+            Console.WriteLine("You don't hear your usually loud roommates. You say a loud 'hello'... but no response.");
+            ClearScreen();
+            Console.WriteLine("You walk oout on your balcony to get some fresh air" + "when you are then met with an orange/brown looking sky. You check your surroundong to see other's reaction,but you see nobody.");
+            ClearScreen();
+            Console.WriteLine("You start to panic for a bit until you caught your breath and calmed down a bit. You start off with the basis. What is your name first of all?");
+            Console.WriteLine("Type youe name.");
+            Console.WriteLine("> ");
             string name = Console.ReadLine();
             Character player = new Character(10, 0, 0);
             return player;
         }
 
-        public void PrintInventory(Item[] inventory)
+        public void PrintInventory(Item[] _kitchenInventory)
         {
-            for(int i = 0; i < inventory.Length; i++)
+            for(int q = 0; q < _kitchenInventory.Length; q++)
             {
-                Console.WriteLine((i + 1) + ". " + inventory[i].name + inventory[i].price);
+                Console.WriteLine((q + 1) + ". " + _kitchenInventory[q].name + _kitchenInventory[q].price);
             }
         }
 
@@ -248,9 +277,9 @@ namespace HelloWorld
                 Console.WriteLine("You cannot beat the demon kid with your weapon! He goes in for the final attack! When suddenly...your weapon transforms!");
                 Item[] inventory = player.GetInventory();
                 char input = ' ';
-                for (int i = 0; i < inventory.Length; i++)
+                for (int p = 0; p < inventory.Length; p++)
                 {
-                    Console.WriteLine((i + 1) + ". " + inventory[i].name + "\n damage: " + inventory[i].dmgBoost);
+                    Console.WriteLine((p + 1) + ". " + inventory[p].name + "\n damage: " + inventory[p].dmgBoost);
                 }
                 input = Console.ReadKey().KeyChar;
                 switch (input)
@@ -325,6 +354,62 @@ namespace HelloWorld
 
             }
         }
+
+
+        public void GettingAnAlly()
+        {
+            ClearScreen();
+            Console.WriteLine("Along you way for answers, you find another demon kid. You go in for the attack but this one seems different. He's retaliating.");
+            ClearScreen();
+            Console.WriteLine("He talks!");
+            ClearScreen();
+            Console.WriteLine("Please don attack me mista, I ain't won of them mean monstas! In fakt, I wonna join ya, mao!");
+            char input;
+            GetInput(out input, "Yes", "No", "Do you accept his offer ? ");
+
+            if(input == '1')
+            {
+                Console.WriteLine("We'll make a great team, aku!");
+                Console.WriteLine("Demon Kid MaoMao joins your party!");
+            }
+            else if (input == '2')
+            {
+                Console.WriteLine("Okie pokie, I understand, mao!");
+                Console.WriteLine("The demon kid ran away...");
+                _gameOver = true;
+            }
+        }
+
+
+        public void BossBattle()
+        {
+            ClearScreen();
+            Console.WriteLine("You and Maomao are walking to the tall buiding in the horizon. Suddenly they are jumped by a huge monster!");
+            while(_player.GetIsAlive() && _codzilla.GetIsAlive() && _ally.GetIsAlive())
+            {
+                _player.PrintStats();
+                _ally.PrintStats();
+                _codzilla.PrintStats();
+
+                char input = ' ';
+                GetInput(out input, "Attack", "Defend", "Magic", "What will you do");
+                if (input == '1')
+                {
+                    float damageTaken = _player.Attack(_codzilla);
+                    Console.WriteLine("You attack Codzilla! You dealt " + (_player._damage - _codzilla._enemyHlth) + " damage!");
+                    damageTaken = _ally.Attack(_codzilla);
+                    Console.WriteLine("MaoMao attacks Codzilla! It dealt "  + (_ally._damage - _codzilla._enemyHlth) + " damage!");
+                }
+                else if (input == '2')
+                {
+                    Console.WriteLine("You use your weapon to defend the upcomig attack!");
+                    Console.WriteLine("MaoMao uses its weapon to defend the upcoming attack!");
+                }
+
+            }
+
+        }
+
 
         //Performed once when the game begins
         public void Start()

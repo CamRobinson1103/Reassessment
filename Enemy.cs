@@ -8,7 +8,7 @@ namespace HelloWorld
     {
         public float _enemyDmg;
         public float _enemyHlth;
-        private float _enemyMana;
+        public float _enemyMana;
 
 
         public Enemy()
@@ -25,7 +25,7 @@ namespace HelloWorld
 
         public void PrintStats()
         {
-            Console.WriteLine("Name: Devil Kid");
+            Console.WriteLine("Name: Demon Kid");
             Console.WriteLine("Health: " + _enemyHlth);
             Console.WriteLine("Damage: " + _enemyDmg);
         }
