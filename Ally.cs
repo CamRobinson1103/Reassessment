@@ -6,7 +6,7 @@ namespace HelloWorld
 {
     class Ally : Character
     {
-        private float _magic;
+        public float _magic;
         private string _name;
         public Ally() : base()
         {

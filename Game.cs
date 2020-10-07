@@ -127,11 +127,11 @@ namespace HelloWorld
             return player;
         }
 
-        public void PrintInventory(Item[] _kitchenInventory)
+        public void PrintInventory(Item[] _inventory)
         {
-            for(int q = 0; q < _kitchenInventory.Length; q++)
+            for(int q = 0; q < _inventory.Length; q++)
             {
-                Console.WriteLine((q + 1) + ". " + _kitchenInventory[q].name + _kitchenInventory[q].price);
+                Console.WriteLine((q + 1) + ". " + _inventory[q].name + _inventory[q].price);
             }
         }
 
@@ -139,7 +139,7 @@ namespace HelloWorld
         {
             ClearScreen();
             Console.WriteLine("You want to check out outside, but you are still hungry. You look throughout the kitchen for something to eat.");
-            PrintInventory(_kitchenInventory);
+            PrintInventory(_kitchenInvetory);
 
             char input = Console.ReadKey().KeyChar;
 
@@ -311,7 +311,7 @@ namespace HelloWorld
             }
         }
 
-        public void ContinuedBattle()
+        public void ContinueBattle()
         {
             ClearScreen();
             while (_player.GetIsAlive() && _demonkid.GetIsAlive())
@@ -384,7 +384,7 @@ namespace HelloWorld
         public void BossBattle()
         {
             ClearScreen();
-            Console.WriteLine("You and Maomao are walking to the tall buiding in the horizon. Suddenly they are jumped by a huge monster!");
+            Console.WriteLine("You and MaoMao are walking to the tall buiding in the horizon. Suddenly they are jumped by a huge monster!");
             while(_player.GetIsAlive() && _codzilla.GetIsAlive() && _ally.GetIsAlive())
             {
                 _player.PrintStats();
@@ -398,15 +398,22 @@ namespace HelloWorld
                     float damageTaken = _player.Attack(_codzilla);
                     Console.WriteLine("You attack Codzilla! You dealt " + (_player._damage - _codzilla._enemyHlth) + " damage!");
                     damageTaken = _ally.Attack(_codzilla);
-                    Console.WriteLine("MaoMao attacks Codzilla! It dealt "  + (_ally._damage - _codzilla._enemyHlth) + " damage!");
+                    Console.WriteLine("MaoMao attacks Codzilla! He dealt "  + (_ally._damage - _codzilla._enemyHlth) + " damage!");
                 }
                 else if (input == '2')
                 {
                     Console.WriteLine("You use your weapon to defend the upcomig attack!");
-                    Console.WriteLine("MaoMao uses its weapon to defend the upcoming attack!");
+                    Console.WriteLine("MaoMao uses his weapon to defend the upcoming attack!");
                 }
-
+                else if (input == '3')
+                {
+                    float damageTaken = _ally.Attack(_codzilla);
+                    Console.WriteLine("You can't use magic.. ButMaoMao can! He casts a low level fire spell!");
+                    Console.WriteLine("MaoMao: FAR!! He dealt " + (_ally._magic - _codzilla._enemyHlth) + " damage!");  
+                }
             }
+            Console.WriteLine("The Codzilla attacks! It dealt " + (_codzilla._enemyDmg - _player._health) + " damage!");
+
 
         }
 
@@ -416,7 +423,6 @@ namespace HelloWorld
         {
             CharacterName();
             InitializeItem();
-           
         }
 
 
@@ -425,12 +431,17 @@ namespace HelloWorld
         public void Update()
         {
             KitchenShop();
+            SelectingWeapon();
+            EnemyBattle();
+            ContinueBattle();
+            GettingAnAlly();
+
         }
 
         //Performed once when the game ends
         public void End()
         {
-            
+            BossBattle();
         }
     }
 }

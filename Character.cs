@@ -8,7 +8,7 @@ namespace HelloWorld
     {
         public float _health;
         public float _damage;
-        private float _magic;
+        public float _magic;
         private int _money;
         private Item[] _inventory;
         private Item _currentWeapon;

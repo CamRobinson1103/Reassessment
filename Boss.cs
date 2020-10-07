@@ -15,10 +15,5 @@ namespace HelloWorld
             _enemyMana = 20;
             _name = "Codzilla";
         }
-
-        public void SpecialAttack()
-        {
-            int _enemyDmg = 20;
-        }
     }
 }
