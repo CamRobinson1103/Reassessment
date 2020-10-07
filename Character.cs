@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
 
 namespace HelloWorld
 {
@@ -18,6 +19,7 @@ namespace HelloWorld
             _health = 10;
             _damage = 0;
             _magic = 0;
+            _inventory = new Item[3];
         }
 
         public Character(float healthVal, float magicVal, float damageVal)
@@ -98,6 +100,32 @@ namespace HelloWorld
                 return true;
             }
             return false;
+        }
+
+        public virtual void Save(StreamWriter writer)
+        {
+            writer.WriteLine(_health);
+            writer.WriteLine(_damage);
+            writer.WriteLine(_magic);
+        }
+
+        public virtual bool Load(StreamReader reader)
+        {
+            string name = reader.ReadLine();
+            float damage = 0;
+            float health = 0;
+            if (float.TryParse(reader.ReadLine(), out health) == false)
+            {
+                return false;
+            }
+            if (float.TryParse(reader.ReadLine(), out damage) == false)
+            {
+                return false;
+            }
+            _damage = damage;
+            _health = health;
+            return true;
+
         }
     }
 }

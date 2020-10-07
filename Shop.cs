@@ -7,17 +7,16 @@ namespace HelloWorld
     class Shop
     {
         private int _money;
-        private Item[] _inventory;
+        private Item[] _kitchenInventory;
 
-        public Shop(Item[] items)
+        public Shop(Item[] kitchenInventory)
         {
-            _money = 10;
-            _inventory = items;
+            this._kitchenInventory = _kitchenInventory;
         }
 
         public bool Sell(Character player, int itemIndex, int playerIndex)
         {
-            Item itemToBuy = _inventory[itemIndex];
+            Item itemToBuy = _kitchenInventory[itemIndex];
             if(player.Buy(itemToBuy, playerIndex))
             {
                 _money += itemToBuy.price;
