@@ -61,5 +61,26 @@ namespace HelloWorld
             Console.WriteLine("Health " + _health);
             Console.WriteLine("Damage " + _damage);
         }
+
+        public virtual float Attack(Character enemy)
+        {
+            float damageTaken = enemy.TakeDamage(_damage);
+            return damageTaken;
+        }
+
+        public virtual float TakeDamage(float damageVal)
+        {
+            _health -= damageVal;
+            if(_health < 0)
+            {
+                _health = 0;
+            }
+            return damageVal;
+        }
+
+        internal float Attack(Enemy demonkid)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -14,7 +14,7 @@ namespace HelloWorld
     {
         private bool _gameOver = false;
         private Character _player;
-        private Enemy _demon;
+        private Enemy _demonkid;
         private Shop _shop;
         private Item _phillyCheesesteak;
         private Item _popTart;
@@ -168,7 +168,7 @@ namespace HelloWorld
             Console.Clear();
         }
 
-        public void EnemyBattle()
+        public void SelectingWeapon()
         {
             ClearScreen();
             char input;
@@ -189,14 +189,41 @@ namespace HelloWorld
             {
                 Console.WriteLine("You picked up the soccer ball for defence");
                 _player.AddItemToInventory(_soccerBall, 0);
-
-
-                while (_player.GetIsAlive() && _demon.GetIsAlive())
-                {
-
-                }
+               
             }
         }
+
+        public void EnemyBattle()
+        {
+            ClearScreen();
+            while (_player.GetIsAlive() && _demonkid.GetIsAlive())
+            {
+                _player.PrintStats();
+                _demonkid.PrintStats();
+
+                char input;
+                GetInput(out input, "Attack", "Defend", "Magic", "What will you do");
+
+                if (input == '1')
+                {
+                    float damageTaken = _player.Attack(_demonkid);
+                    Console.WriteLine("You attack the Demon Kid!");
+                }
+
+                else if (input == '2')
+                {
+                    Console.WriteLine("You use your weapon to try to defend the upcoming attack!");
+                }
+                else if (input == '3')
+                {
+                    Console.WriteLine("You try to use a magic spell... But you don't know any magic!");
+                }
+
+                Console.WriteLine("The Demon Kids attacks!");
+                
+            }
+        }
+
 
         //Performed once when the game begins
         public void Start()

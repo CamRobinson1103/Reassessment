@@ -23,7 +23,14 @@ namespace HelloWorld
             return _enemyHlth > 0;
         }
 
+        public void PrintStats()
+        {
+            Console.WriteLine("Name: Devil Kid");
+            Console.WriteLine("Health: " + _enemyHlth);
+            Console.WriteLine("Damage: " + _enemyDmg);
+        }
 
+     
 
     }
 }
