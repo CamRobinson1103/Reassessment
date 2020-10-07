@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
 
 namespace HelloWorld
 {
@@ -15,8 +16,8 @@ namespace HelloWorld
         private bool _gameOver = false;
         private Character _player;
         private Character _ally;
-        private Enemy _codzilla;
         private Enemy _demonkid;
+        private Enemy _codzilla;
         private Shop _shop;
         private Item _phillyCheesesteak;
         private Item _popTart;
@@ -113,6 +114,7 @@ namespace HelloWorld
 
         public Character CharacterName()
         {
+            ClearScreen();
             Console.WriteLine("You just woke up from a good night's sleep. You head to the kitchen from some breakfast. When you get to the kitchen you feel like something's off.");
             ClearScreen();
             Console.WriteLine("You don't hear your usually loud roommates. You say a loud 'hello'... but no response.");
@@ -139,7 +141,7 @@ namespace HelloWorld
         {
             ClearScreen();
             Console.WriteLine("You want to check out outside, but you are still hungry. You look throughout the kitchen for something to eat.");
-            PrintInventory(_kitchenInvetory);
+            PrintInventory(_kitchenInventory);
 
             char input = Console.ReadKey().KeyChar;
 
@@ -414,18 +416,56 @@ namespace HelloWorld
             }
             Console.WriteLine("The Codzilla attacks! It dealt " + (_codzilla._enemyDmg - _player._health) + " damage!");
 
+             if(_player.GetIsAlive())
+            {
+                Console.WriteLine("You defeated Codzilla! You continue to look for answers...");
+                _gameOver = true;
+            }
+            else if (_codzilla.GetIsAlive())
+            {
+                Console.WriteLine("You lost to Godzilla!!");
+                _gameOver = true;
+
+            }
 
         }
+
+
+        public void Save()
+        {
+            StreamWriter writer = new StreamWriter("SaveData.txt");
+            _player.Save(writer);
+            writer.Close();
+        }
+
+        public void Load()
+        {
+            StreamReader reader = new StreamReader("SaveData.txt");
+            _player.Load(reader);
+            reader.Close();
+        }
+
 
 
         //Performed once when the game begins
         public void Start()
         {
-            CharacterName();
+            MainMenu();
             InitializeItem();
         }
 
-
+        public void MainMenu()
+        {
+            char input;
+            GetInput(out input, "New Game", "Load Game", "What are you going to do?");
+            if(input == '2')
+            {
+                _player = new Character();
+                Load();
+                return;
+            }
+            _player = CharacterName();
+        }
 
         //Repeated until the game ends
         public void Update()
