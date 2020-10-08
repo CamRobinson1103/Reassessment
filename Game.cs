@@ -434,6 +434,14 @@ namespace HelloWorld
 
         }
 
+<<<<<<< HEAD
+
+        public void Save()
+        {
+            StreamWriter writer = new StreamWriter("SaveData.txt");
+            _player.Save(writer);
+            writer.Close();
+=======
 
         public void Save()
         {
@@ -447,7 +455,16 @@ namespace HelloWorld
             StreamReader reader = new StreamReader("SaveData.txt");
             _player.Load(reader);
             reader.Close();
+>>>>>>> master
         }
+
+        public void Load()
+        {
+            StreamReader reader = new StreamReader("SaveData.txt");
+            _player.Load(reader);
+            reader.Close();
+        }
+
 
 
 
