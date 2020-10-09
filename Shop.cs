@@ -9,9 +9,10 @@ namespace HelloWorld
         private int _money;
         private Item[] _kitchenInventory;
 
+
         public Shop(Item[] kitchenInventory)
         {
-            this._kitchenInventory = _kitchenInventory;
+            this._kitchenInventory = kitchenInventory;
         }
 
         public bool Sell(Character player, int itemIndex, int playerIndex)
