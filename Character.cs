@@ -13,20 +13,24 @@ namespace HelloWorld
         private int _money;
         private Item[] _inventory;
         private Item _currentWeapon;
+        private Item[] _kitchenInventory;
 
-        public Character()
+
+        public Character() : base()
         {
             _health = 10;
-            _damage = 0;
+            _damage = 1;
             _magic = 0;
-            _inventory = new Item[3];
+            _inventory = new Item[11];
+            
         }
 
-        public Character(float healthVal, float magicVal, float damageVal)
+        public Character(float healthVal, float magicVal, float damageVal, int inventorySize)
         {
             _health = healthVal;
             _magic = magicVal;
             _damage = damageVal;
+            _inventory = new Item[inventorySize];
         }
 
         public bool Buy(Item item, int inventoryIndex)
@@ -34,11 +38,12 @@ namespace HelloWorld
             if(_money >= item.price)
             {
                 _money -= item.price;
-                _inventory[inventoryIndex] = item;
+                _kitchenInventory[inventoryIndex] = item;
                 return true;
             }
             return false;
         }
+
 
         public int GetMoney()
         {
@@ -47,12 +52,13 @@ namespace HelloWorld
 
         public Item[] GetInventory()
         {
+            
             return _inventory;
         }
 
         public void AddItemToInventory(Item item, int index)
         {
-            _inventory[index] = item;
+                _inventory[index] = item;
         }
 
         public bool GetIsAlive()
@@ -81,10 +87,7 @@ namespace HelloWorld
             return damageVal;
         }
 
-        internal float Attack(Enemy demonkid)
-        {
-            throw new NotImplementedException();
-        }
+        
         public void EquipItem(int itemIndex)
         {
             if(Contains(itemIndex))
@@ -95,7 +98,7 @@ namespace HelloWorld
 
         public bool Contains(int itemIndex)
         {
-            if (itemIndex > 0 && itemIndex < _inventory.Length)
+            if (itemIndex > 0 && itemIndex < _inventory?.Length)
             {
                 return true;
             }
@@ -125,7 +128,11 @@ namespace HelloWorld
             _damage = damage;
             _health = health;
             return true;
-
+      
         }
+
+
+
+        
     }
 }

@@ -127,14 +127,14 @@ namespace HelloWorld
             Console.WriteLine("Type youe name.");
             Console.WriteLine("> ");
             string name = Console.ReadLine();
-            Character player = new Character(10, 0, 0);
+            Character player = new Character(10, 0, 0, 7);
             return player;
         }
 
         public void PrintInventory(Item[] _inventory)
             
         {
-            for (int q = 0; q < _inventory?.Length; q++)
+            for (int q = 0; q < _inventory.Length; q++)
             {
                 Console.WriteLine((q + 1) + ". " + _inventory[q].name + _inventory[q].price);
             }
@@ -210,9 +210,10 @@ namespace HelloWorld
             Console.Clear();
         }
 
-        public void SelectingWeapon()
+        public void SelectingWeapon(Character _player)
         {
             ClearScreen();
+            //Get input for player
             char input;
             GetInput(out input, "Plastic baseball bat", "Twin Nerf pistols", "Soccor ball",
             "You walked outside to check on everything, when suddenly you see short demons with axes charging at you! You see a plastic baseball bat " +
@@ -231,28 +232,33 @@ namespace HelloWorld
             }
             else if (input == '3')
             {
-                Console.WriteLine("You picked up the soccer ball for defence");
+                Console.WriteLine("You picked up the soccer ball for defense");
                 _player.AddItemToInventory(_soccerBall, 8);
                 _player.AddItemToInventory(_spikeBall, 9);
                
             }
+            
         }
+
+        
+
+     
+
 
         public void EnemyBattle()
         {
             ClearScreen();
-            while (_player.GetIsAlive() && _demonkid.GetIsAlive())
+            while ( _player.GetIsAlive() && _demonkid.GetIsAlive())
             {
                 _player.PrintStats();
-                _demonkid.PrintStats();
 
                 char input;
                 GetInput(out input, "Attack", "Defend", "Magic", "What will you do");
 
                 if (input == '1')
                 {
-                    float damageTaken = _player.Attack(_demonkid);
-                    Console.WriteLine("You attack the Demon Kid! You dealt " + (_player._damage - _demonkid._enemyHlth) +" damage!");
+                    float damageTaken = _demonkid.Attack(_demonkid);
+                    Console.WriteLine("You attacked the enemy!! It dealt " + damageTaken  + " damage! ");
                 }
 
                 else if (input == '2')
@@ -265,25 +271,20 @@ namespace HelloWorld
                 }
                 else
                 {
-                    Console.WriteLine("The Demon Kids attacks! It dealt " + (_demonkid._enemyDmg - _player._health));
+                    float damageTaken = _demonkid.Attack(_demonkid);
+                    Console.WriteLine("The Demon Kids attacks! It dealt " + damageTaken + " damage! ");
 
                 }
 
             }
-
-           
-
-        }
-
-        public void ChangeWeapon(Character player)
-        {
-            ClearScreen();
-            if (_demonkid.GetIsAlive())
+            if (_player.GetIsAlive())
             {
+                ClearScreen();
+
                 Console.WriteLine("You cannot beat the demon kid with your weapon! He goes in for the final attack! When suddenly...your weapon transforms!");
-                Item[] inventory = player.GetInventory();
+                Item[] inventory = _player.GetInventory();
                 char input = ' ';
-                for (int p = 0; p < inventory.Length; p++)
+                for (int p = 0; p < inventory?.Length; p++)
                 {
                     Console.WriteLine((p + 1) + ". " + inventory[p].name + "\n damage: " + inventory[p].dmgBoost);
                 }
@@ -315,7 +316,12 @@ namespace HelloWorld
                         }
                 }
             }
+
+
+
         }
+
+        
 
         public void ContinueBattle()
         {
@@ -330,8 +336,8 @@ namespace HelloWorld
 
                 if (input == '1')
                 {
-                    float damageTaken = _player.Attack(_demonkid);
-                    Console.WriteLine("You attack the Demon Kid! You dealt " + (_player._damage - _demonkid._enemyHlth) + " damage!");
+                    float damageTaken = _player.Attack(_player);
+                    Console.WriteLine("You attack the Demon Kid! You dealt " + damageTaken + " damage!");
                 }
 
                 else if (input == '2')
@@ -401,9 +407,9 @@ namespace HelloWorld
                 GetInput(out input, "Attack", "Defend", "Magic", "What will you do");
                 if (input == '1')
                 {
-                    float damageTaken = _player.Attack(_codzilla);
+                    float damageTaken = _player.Attack(_player);
                     Console.WriteLine("You attack Codzilla! You dealt " + (_player._damage - _codzilla._enemyHlth) + " damage!");
-                    damageTaken = _ally.Attack(_codzilla);
+                    damageTaken = _ally.Attack(_player);
                     Console.WriteLine("MaoMao attacks Codzilla! He dealt "  + (_ally._damage - _codzilla._enemyHlth) + " damage!");
                 }
                 else if (input == '2')
@@ -413,7 +419,7 @@ namespace HelloWorld
                 }
                 else if (input == '3')
                 {
-                    float damageTaken = _ally.Attack(_codzilla);
+                    float damageTaken = _ally.Attack(_ally);
                     Console.WriteLine("You can't use magic.. ButMaoMao can! He casts a low level fire spell!");
                     Console.WriteLine("MaoMao: FAR!! He dealt " + (_ally._magic - _codzilla._enemyHlth) + " damage!");  
                 }
@@ -438,6 +444,7 @@ namespace HelloWorld
 
         public void Save()
         {
+            //Create a new stream writer.
             StreamWriter writer = new StreamWriter("SaveData.txt");
             _player.Save(writer);
             writer.Close();
@@ -462,6 +469,9 @@ namespace HelloWorld
             InitializeItem();
             _kitchenInventory = new Item[] {_phillyCheesesteak, _popTart, _cupNoodles};
             _shop = new Shop(_kitchenInventory);
+            _demonkid = new Enemy(5, 3, 0);
+            _codzilla = new Enemy(6, 4, 2);
+            _ally = new Ally(120, 4, 5,3);
         }
 
         public void MainMenu()
@@ -471,6 +481,7 @@ namespace HelloWorld
             if(input == '2')
             {
                 _player = new Character();
+                _demonkid = new Enemy();
                 Load();
                 return;
             }
@@ -481,17 +492,18 @@ namespace HelloWorld
         public void Update()
         {
             KitchenShop();
-            SelectingWeapon();
+            SelectingWeapon(_player);
             EnemyBattle();
             ContinueBattle();
             GettingAnAlly();
+            BossBattle();
 
         }
 
         //Performed once when the game ends
         public void End()
         {
-            BossBattle();
+            
         }
     }
 }

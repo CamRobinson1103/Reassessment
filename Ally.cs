@@ -14,7 +14,7 @@ namespace HelloWorld
             _name = "MaoMao";
         }
 
-        public Ally(float healthVal, float magicVal, float damageVal) : base(healthVal, magicVal, damageVal)
+        public Ally(float healthVal, float magicVal, float damageVal, int inventorySize) : base(healthVal, magicVal, damageVal,inventorySize)
         {
             _magic = magicVal;
         }
